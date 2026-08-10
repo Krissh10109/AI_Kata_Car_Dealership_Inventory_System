@@ -24,8 +24,8 @@ function readStoredUser(): User | null {
     const raw = localStorage.getItem(USER_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as User;
-    if (parsed && (parsed.name === "Victoria Chen" || (parsed.role === "admin" && (!parsed.name || parsed.name === "Fleet Manager")))) {
-      parsed.name = "Het Dedania";
+    if (parsed && (parsed.name === "Victoria Chen" || parsed.name === "Fleet Manager")) {
+      parsed.name = "Krish Modi";
       localStorage.setItem(USER_KEY, JSON.stringify(parsed));
     }
     return parsed;

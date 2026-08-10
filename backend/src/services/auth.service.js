@@ -9,13 +9,13 @@ const JWT_SECRET = process.env.JWT_SECRET ?? "dev-jwt-secret";
 
 function sanitizeUser(user) {
   const userName = (!user.name || user.name === "Victoria Chen" || user.name === "Fleet Manager") && user.role === "admin"
-    ? "Het Dedania"
+    ? "Krish Modi"
     : user.name;
 
   return {
     id: user.id,
     email: user.email,
-    name: userName || (user.role === "admin" ? "Het Dedania" : "Valued Client"),
+    name: userName || (user.role === "admin" ? "Krish Modi" : "Valued Client"),
     role: user.role,
     dealership: user.dealership || "Global Motors",
     avatar: user.avatar || "",

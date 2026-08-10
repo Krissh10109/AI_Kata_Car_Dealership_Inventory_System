@@ -531,7 +531,7 @@ async function main() {
     data: {
       email: 'admin@globalmotors.com',
       passwordHash,
-      name: 'Het Dedania',
+      name: 'Krish Modi',
       role: 'admin',
       dealership: 'Global Motors',
     }

@@ -14,7 +14,7 @@ export function Topbar({ onSearch, onMenuClick }: TopbarProps) {
   const rawName = user?.name;
   const isVictoriaOrEmpty = !rawName || rawName === "Victoria Chen" || rawName === "Fleet Manager";
   const displayName = isVictoriaOrEmpty
-    ? user?.role === "admin" || !user?.role ? "Het Dedania" : "Valued Client"
+    ? user?.role === "admin" || !user?.role ? "Krish Modi" : "Valued Client"
     : rawName;
 
   return (
