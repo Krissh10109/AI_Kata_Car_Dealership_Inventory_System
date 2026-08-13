@@ -119,7 +119,6 @@ function DrawerContent({
           initial={!prefersReduced ? "hidden" : undefined}
           animate={!prefersReduced ? "visible" : undefined}
         >
-          {/* Hero Image */}
           <motion.div
             className="relative h-56 w-full overflow-hidden rounded-xl bg-surface-container border border-outline-variant/60"
             variants={!prefersReduced ? staggerItem : undefined}

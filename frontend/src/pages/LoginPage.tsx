@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { authService } from "../services/authService";
 import { Modal } from "../components/Modal";
 import { Button } from "../components/Button";
-import { fadeInUp, staggerContainer, staggerItem } from "../lib/motion";
+import { CustomCursor } from "../components/cinematic/CustomCursor";
 
 type PersonaRole = "fleet_manager" | "admin" | "sales_exec";
 
@@ -69,150 +69,150 @@ export function LoginPage() {
     }
   }
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
+    }),
+  };
+
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-background text-on-background antialiased selection:bg-primary-container selection:text-on-primary-container">
-      {/* Left Column: Form Section */}
-      <div className="w-full md:w-1/2 flex flex-col justify-between p-md md:p-xl min-h-screen z-10 relative bg-surface">
+    <div className="min-h-screen flex flex-col md:flex-row bg-background text-on-surface antialiased selection:bg-primary/20 selection:text-on-surface">
+      <CustomCursor />
+
+      {/* ─── LEFT: Form Section ───────────────────────────────────────────── */}
+      <div className="w-full md:w-1/2 flex flex-col justify-between p-6 md:p-12 min-h-screen z-10 relative bg-[#0e0e0e]">
         {/* Top Logo */}
-        <Link to="/" className="flex items-center gap-sm transition-opacity hover:opacity-90">
-          <span
-            className="material-symbols-outlined text-[28px] font-bold text-primary"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            speed
-          </span>
-          <span className="text-title-lg font-bold tracking-tight text-on-surface">
-            DriveFlow
-          </span>
+        <Link to="/" className="font-display text-lg tracking-tight text-on-surface transition-opacity hover:opacity-70">
+          DRIVEFLOW
         </Link>
 
         {/* Main Form Area */}
-        <motion.div
-          className="max-w-md w-full mx-auto my-auto py-xl"
-          variants={!prefersReduced ? staggerContainer : undefined}
-          initial={!prefersReduced ? "hidden" : undefined}
-          animate={!prefersReduced ? "visible" : undefined}
-        >
+        <div className="max-w-sm w-full mx-auto my-auto py-12">
           {/* Badge */}
           <motion.div
-            variants={!prefersReduced ? staggerItem : undefined}
-            className="mb-md inline-flex items-center gap-xs bg-primary-container/10 border border-primary-container/20 px-sm py-xs rounded-full"
+            custom={0}
+            variants={!prefersReduced ? fadeUp : undefined}
+            initial={!prefersReduced ? "hidden" : undefined}
+            animate={!prefersReduced ? "visible" : undefined}
+            className="mb-4 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary"
           >
-            <span className="material-symbols-outlined text-primary text-[14px]">shield</span>
-            <span className="text-label-sm text-primary font-medium">Enterprise Edition</span>
+            <span className="h-px w-4 bg-primary" />
+            Secure Access
           </motion.div>
 
           <motion.h1
-            variants={!prefersReduced ? staggerItem : undefined}
-            className="text-headline-md font-bold text-on-surface md:text-display-sm mb-xs"
+            custom={1}
+            variants={!prefersReduced ? fadeUp : undefined}
+            initial={!prefersReduced ? "hidden" : undefined}
+            animate={!prefersReduced ? "visible" : undefined}
+            className="font-display text-3xl tracking-tight text-on-surface mb-2 md:text-4xl"
           >
             Welcome Back
           </motion.h1>
           <motion.p
-            variants={!prefersReduced ? staggerItem : undefined}
-            className="text-body-lg text-on-surface-variant mb-xl"
+            custom={2}
+            variants={!prefersReduced ? fadeUp : undefined}
+            initial={!prefersReduced ? "hidden" : undefined}
+            animate={!prefersReduced ? "visible" : undefined}
+            className="text-body-md text-on-surface-variant mb-10"
           >
-            Access your enterprise dealership platform securely.
+            Access your enterprise dealership platform.
           </motion.p>
 
-          {/* Role Persona Selector Tabs */}
-          <motion.div variants={!prefersReduced ? staggerItem : undefined} className="mb-xl">
-            <p className="text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant mb-xs">
-              ⚡ Select Demo Role
+          {/* Role Persona Selector */}
+          <motion.div
+            custom={3}
+            variants={!prefersReduced ? fadeUp : undefined}
+            initial={!prefersReduced ? "hidden" : undefined}
+            animate={!prefersReduced ? "visible" : undefined}
+            className="mb-8"
+          >
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant mb-3">
+              Demo Role
             </p>
-            <div className="flex bg-surface-container-high rounded-xl p-xs w-full gap-xs">
-              <button
-                type="button"
-                onClick={() => handlePersonaSwitch("admin")}
-                className={`flex-1 py-xs px-sm rounded-lg text-label-sm font-medium transition-all ${
-                  activePersona === "admin"
-                    ? "bg-surface shadow text-primary font-semibold"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Administrator
-              </button>
-              <button
-                type="button"
-                onClick={() => handlePersonaSwitch("fleet_manager")}
-                className={`flex-1 py-xs px-sm rounded-lg text-label-sm font-medium transition-all ${
-                  activePersona === "fleet_manager"
-                    ? "bg-surface shadow text-primary font-semibold"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Fleet Manager
-              </button>
-              <button
-                type="button"
-                onClick={() => handlePersonaSwitch("sales_exec")}
-                className={`flex-1 py-xs px-sm rounded-lg text-label-sm font-medium transition-all ${
-                  activePersona === "sales_exec"
-                    ? "bg-surface shadow text-primary font-semibold"
-                    : "text-on-surface-variant hover:text-on-surface"
-                }`}
-              >
-                Sales Exec
-              </button>
+            <div className="flex border border-outline-variant rounded-none overflow-hidden">
+              {(["admin", "fleet_manager", "sales_exec"] as PersonaRole[]).map((role) => (
+                <button
+                  key={role}
+                  type="button"
+                  onClick={() => handlePersonaSwitch(role)}
+                  className={`flex-1 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] transition-all border-r border-outline-variant last:border-r-0 ${
+                    activePersona === role
+                      ? "bg-primary/10 text-primary border-primary"
+                      : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
+                  }`}
+                >
+                  {role === "admin" ? "Admin" : role === "fleet_manager" ? "Manager" : "Sales"}
+                </button>
+              ))}
             </div>
           </motion.div>
 
-          <form onSubmit={handleSubmit} className="space-y-md" noValidate>
+          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <AnimatePresence mode="wait">
               {registrationState?.registered && (
                 <motion.p
                   key="registered-banner"
-                  variants={fadeInUp}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-md py-sm text-body-md text-emerald-700"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="border border-success/30 bg-success/5 px-4 py-3 text-body-md text-success"
                 >
-                  Account created for {registrationState.email ?? "your email"}. Please sign in below.
+                  Account created for {registrationState.email ?? "your email"}. Sign in below.
                 </motion.p>
               )}
             </AnimatePresence>
 
             {/* Email Field */}
-            <motion.div variants={!prefersReduced ? staggerItem : undefined} className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
-                <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">
-                  mail
-                </span>
-              </div>
+            <motion.div
+              custom={4}
+              variants={!prefersReduced ? fadeUp : undefined}
+              initial={!prefersReduced ? "hidden" : undefined}
+              animate={!prefersReduced ? "visible" : undefined}
+            >
+              <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant mb-2 block">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email Address"
-                className="block w-full pl-[44px] pr-md py-md bg-surface border border-outline-variant rounded-lg text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                placeholder="name@company.com"
+                className="block w-full bg-transparent border-0 border-b border-outline-variant px-0 py-3 text-body-lg text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary transition-colors"
               />
             </motion.div>
 
             {/* Password Field */}
-            <motion.div variants={!prefersReduced ? staggerItem : undefined} className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-md flex items-center pointer-events-none">
-                <span className="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">
-                  lock
-                </span>
-              </div>
+            <motion.div
+              custom={5}
+              variants={!prefersReduced ? fadeUp : undefined}
+              initial={!prefersReduced ? "hidden" : undefined}
+              animate={!prefersReduced ? "visible" : undefined}
+              className="relative"
+            >
+              <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant mb-2 block">
+                Password
+              </label>
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="block w-full pl-[44px] pr-2xl py-md bg-surface border border-outline-variant rounded-lg text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                placeholder="••••••••"
+                className="block w-full bg-transparent border-0 border-b border-outline-variant px-0 py-3 pr-10 text-body-lg text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
-                className="absolute right-md top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors"
+                className="absolute right-0 bottom-3 text-on-surface-variant hover:text-on-surface transition-colors"
               >
-                <span className="material-symbols-outlined text-[20px]">
+                <span className="material-symbols-outlined text-[18px]">
                   {showPassword ? "visibility_off" : "visibility"}
                 </span>
               </button>
@@ -220,17 +220,20 @@ export function LoginPage() {
 
             {/* Remember Me & Forgot Password */}
             <motion.div
-              variants={!prefersReduced ? staggerItem : undefined}
-              className="flex items-center justify-between pt-xs"
+              custom={6}
+              variants={!prefersReduced ? fadeUp : undefined}
+              initial={!prefersReduced ? "hidden" : undefined}
+              animate={!prefersReduced ? "visible" : undefined}
+              className="flex items-center justify-between pt-2"
             >
-              <label className="flex items-center gap-sm cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary/40"
+                  className="h-3.5 w-3.5 rounded-sm border-outline-variant bg-transparent text-primary focus:ring-primary/30"
                 />
-                <span className="text-body-md text-on-surface-variant">Remember me</span>
+                <span className="text-[11px] text-on-surface-variant">Remember me</span>
               </label>
               <button
                 type="button"
@@ -238,7 +241,7 @@ export function LoginPage() {
                   setForgotEmail(email);
                   setIsForgotOpen(true);
                 }}
-                className="text-label-md font-semibold text-primary hover:underline"
+                className="text-[11px] font-semibold text-on-surface-variant hover:text-primary transition-colors"
               >
                 Forgot Password?
               </button>
@@ -248,107 +251,95 @@ export function LoginPage() {
               {error && (
                 <motion.div
                   key="login-error"
-                  variants={fadeInUp}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="flex items-center gap-xs rounded-lg border border-error/30 bg-error-container px-md py-sm text-body-md text-on-error-container"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center gap-2 border border-error/30 bg-error/5 px-4 py-3 text-body-md text-error"
                 >
-                  <span className="material-symbols-outlined text-[20px]">error</span>
+                  <span className="material-symbols-outlined text-[18px]">error</span>
                   <span>{error}</span>
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* Submit Button */}
-            <motion.div variants={!prefersReduced ? staggerItem : undefined}>
+            <motion.div
+              custom={7}
+              variants={!prefersReduced ? fadeUp : undefined}
+              initial={!prefersReduced ? "hidden" : undefined}
+              animate={!prefersReduced ? "visible" : undefined}
+            >
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-sm py-md px-lg bg-primary text-on-primary rounded-lg font-semibold shadow-md hover:bg-primary-fixed-variant transition-all hover:-translate-y-0.5"
+                className="w-full flex items-center justify-center gap-3 py-3.5 px-6 bg-primary text-on-primary text-[13px] font-semibold uppercase tracking-[0.1em] transition-all hover:bg-primary/90 disabled:opacity-50"
               >
-                <span>{isLoading ? "Authenticating..." : "Sign In to Dashboard"}</span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                <span>{isLoading ? "Authenticating..." : "Enter Platform"}</span>
+                <span>→</span>
               </button>
             </motion.div>
           </form>
 
-          <p className="mt-lg text-center text-body-md text-on-surface-variant">
+          <p className="mt-8 text-center text-[11px] text-on-surface-variant">
             New to the platform?{" "}
             <Link to="/register" className="font-semibold text-primary hover:underline">
               Create an account
             </Link>
           </p>
-        </motion.div>
+        </div>
 
         {/* Footer */}
-        <div className="flex flex-wrap gap-md text-label-sm text-on-surface-variant pt-lg border-t border-outline-variant/30">
-          <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-          <a href="#" className="hover:text-primary transition-colors">Terms</a>
-          <a href="#" className="hover:text-primary transition-colors">Security</a>
-          <a href="#" className="hover:text-primary transition-colors">Support</a>
+        <div className="flex flex-wrap gap-6 text-[10px] uppercase tracking-[0.15em] text-on-surface-variant/40 pt-6 border-t border-outline-variant/30">
+          <a href="#" className="hover:text-on-surface-variant transition-colors">Privacy</a>
+          <a href="#" className="hover:text-on-surface-variant transition-colors">Terms</a>
+          <a href="#" className="hover:text-on-surface-variant transition-colors">Security</a>
         </div>
       </div>
 
-      {/* Right Column: Hero Showcase Panel */}
-      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#131b2e] via-[#1e35d0] to-[#0f172a] relative overflow-hidden p-xl flex-col justify-between text-white">
-        {/* Ambient Blur */}
-        <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent opacity-70" />
+      {/* ─── RIGHT: Cinematic Visual Panel ────────────────────────────────── */}
+      <div className="hidden md:flex w-1/2 bg-[#0a0a0a] relative overflow-hidden flex-col justify-between p-12">
+        {/* Atmospheric glow */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-primary/[0.04] blur-[150px]" />
+        </div>
 
-        {/* Top Operational Badge */}
+        {/* Top status */}
         <div className="flex justify-end relative z-10">
-          <div className="rounded-full bg-white/10 px-md py-sm backdrop-blur-xl border border-white/15 shadow-sm flex items-center gap-sm">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-label-sm text-white/90 font-medium">System Operational • 99.99% Uptime</span>
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
+            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+            System Operational
           </div>
         </div>
 
-        {/* Center Showcase Card */}
-        <div className="relative z-10 max-w-lg mx-auto w-full">
-          <div className="rounded-2xl border border-white/15 bg-white/10 p-lg backdrop-blur-xl shadow-2xl mb-lg">
-            <div className="flex items-center gap-md mb-md">
-              <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center border border-white/10">
-                <span className="material-symbols-outlined text-white text-[28px]">analytics</span>
-              </div>
-              <div>
-                <h2 className="text-headline-sm font-bold text-white tracking-tight">Enterprise Grade</h2>
-                <p className="text-body-md text-white/70">Precision Fleet Intelligence Platform</p>
-              </div>
-            </div>
-            <p className="text-body-md text-white/80 leading-relaxed">
-              Integrated real-time valuation metrics, dynamic inventory forecasting, and end-to-end loan quote calculation in a unified platform.
-            </p>
-          </div>
+        {/* Center editorial statement */}
+        <div className="relative z-10 flex-1 flex items-center">
+          <div>
+            <h2 className="font-display text-5xl lg:text-6xl tracking-tight text-on-surface/[0.07] leading-none mb-8">
+              PRECISION
+              <br />
+              DRIVES
+              <br />
+              EVERYTHING.
+            </h2>
 
-          {/* Bento Grid Stats */}
-          <div className="grid grid-cols-2 gap-md">
-            <div className="rounded-xl border border-white/15 bg-white/10 p-md backdrop-blur-xl shadow-lg">
-              <span className="material-symbols-outlined text-white/60 mb-xs text-[20px]">account_balance</span>
-              <p className="text-headline-md font-bold text-white">$1.2B+</p>
-              <p className="text-label-sm text-white/70">Fleet Value Managed</p>
-            </div>
-            <div className="rounded-xl border border-white/15 bg-white/10 p-md backdrop-blur-xl shadow-lg">
-              <span className="material-symbols-outlined text-white/60 mb-xs text-[20px]">directions_car</span>
-              <p className="text-headline-md font-bold text-white">450k+</p>
-              <p className="text-label-sm text-white/70">Active Vehicles</p>
+            <div className="space-y-6 max-w-xs">
+              <div className="border-t border-outline-variant pt-6">
+                <p className="text-display-sm font-bold tracking-tight text-primary">$1.2B+</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant mt-1">Fleet Value Managed</p>
+              </div>
+              <div className="border-t border-outline-variant pt-6">
+                <p className="text-display-sm font-bold tracking-tight text-on-surface">450K+</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant mt-1">Active Vehicles</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Security Badges */}
-        <div className="relative z-10 flex justify-center gap-xl text-white/70">
-          <div className="flex items-center gap-xs">
-            <span className="material-symbols-outlined text-[16px]">verified_user</span>
-            <span className="text-label-sm">SOC 2 Type II</span>
-          </div>
-          <div className="flex items-center gap-xs">
-            <span className="material-symbols-outlined text-[16px]">lock</span>
-            <span className="text-label-sm">256-bit Encryption</span>
-          </div>
-          <div className="flex items-center gap-xs">
-            <span className="material-symbols-outlined text-[16px]">policy</span>
-            <span className="text-label-sm">GDPR Ready</span>
-          </div>
+        {/* Bottom security badges */}
+        <div className="relative z-10 flex gap-8 text-[10px] font-semibold uppercase tracking-[0.15em] text-on-surface-variant/40">
+          <span>SOC 2 Type II</span>
+          <span>256-bit Encrypted</span>
+          <span>GDPR Ready</span>
         </div>
       </div>
 
@@ -363,7 +354,7 @@ export function LoginPage() {
       >
         {forgotSuccessMessage ? (
           <div className="space-y-md text-center py-md">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 mx-auto">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10 text-success mx-auto">
               <span className="material-symbols-outlined text-[28px]">mark_email_read</span>
             </span>
             <p className="text-body-md text-on-surface">{forgotSuccessMessage}</p>
@@ -389,7 +380,7 @@ export function LoginPage() {
               value={forgotEmail}
               onChange={(e) => setForgotEmail(e.target.value)}
               placeholder="name@company.com"
-              className="w-full rounded-lg border border-outline-variant bg-surface px-md py-md text-body-md text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full bg-transparent border-0 border-b border-outline-variant px-0 py-3 text-body-md text-on-surface focus:outline-none focus:border-primary transition-colors"
             />
             <div className="flex gap-sm pt-sm">
               <Button type="button" variant="secondary" onClick={() => setIsForgotOpen(false)} className="flex-1 justify-center">

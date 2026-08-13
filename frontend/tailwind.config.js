@@ -1,77 +1,98 @@
 /** @type {import('tailwindcss').Config} */
-// Design tokens reconciled from the Stitch export's 3 consistent screens
-// (login / inventory / modals-states) and precision_automate/DESIGN.md.
-// The dashboard mockup used a slightly different slate palette; we
-// standardize on this one across the whole app per DESIGN.md's stated
-// "Electric Blue #2563EB primary" direction.
+// DriveFlow — Cinematic Dark Automotive Design System
+// Deep black foundation with restrained warm gold accent.
+// Editorial typography hierarchy for premium visual identity.
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
       colors: {
-        "surface-tint": "#0053db",
-        "error-container": "#ffdad6",
-        "inverse-surface": "#2e3039",
-        "secondary-fixed": "#d3e4fe",
-        "primary-fixed-dim": "#b4c5ff",
-        "on-secondary-fixed": "#0b1c30",
-        "on-secondary-container": "#54647a",
-        "tertiary-fixed": "#ffdbcd",
-        "on-secondary-fixed-variant": "#38485d",
-        "surface-container": "#ededf9",
-        outline: "#737686",
-        "outline-variant": "#c3c6d7",
-        "secondary-container": "#d0e1fb",
-        "surface-bright": "#faf8ff",
-        "on-error-container": "#93000a",
-        "surface-container-highest": "#e1e2ed",
-        "on-tertiary-container": "#ffede6",
-        "surface-container-lowest": "#ffffff",
-        surface: "#faf8ff",
-        secondary: "#505f76",
-        "surface-container-high": "#e7e7f3",
-        "tertiary-fixed-dim": "#ffb596",
-        tertiary: "#943700",
-        background: "#faf8ff",
-        "surface-container-low": "#f3f3fe",
-        "secondary-fixed-dim": "#b7c8e1",
-        "surface-dim": "#d9d9e5",
-        "on-background": "#191b23",
-        "tertiary-container": "#bc4800",
-        "on-error": "#ffffff",
-        "on-primary-fixed-variant": "#003ea8",
-        "on-primary": "#ffffff",
-        "inverse-on-surface": "#f0f0fb",
-        "inverse-primary": "#b4c5ff",
-        "primary-fixed": "#dbe1ff",
-        "on-secondary": "#ffffff",
-        "on-surface": "#191b23",
+        // ─── Core Surfaces ───────────────────────────────────────────────
+        background: "#0a0a0a",
+        surface: "#111111",
+        "surface-dim": "#0d0d0d",
+        "surface-bright": "#1a1a1a",
+        "surface-container-lowest": "#0e0e0e",
+        "surface-container-low": "#141414",
+        "surface-container": "#1a1a1a",
+        "surface-container-high": "#222222",
+        "surface-container-highest": "#2a2a2a",
+        "surface-variant": "#1e1e1e",
+        "surface-tint": "#c9a96e",
+
+        // ─── On-Surface (Typography) ─────────────────────────────────────
+        "on-background": "#e8e6e3",
+        "on-surface": "#e8e6e3",
+        "on-surface-variant": "#6b6b6b",
+
+        // ─── Primary (Warm Gold) ─────────────────────────────────────────
+        primary: "#c9a96e",
+        "primary-container": "#1a1508",
+        "primary-fixed": "#e8d5a8",
+        "primary-fixed-dim": "#b89a5a",
+        "primary-fixed-variant": "#a8894e",
+        "on-primary": "#0a0a0a",
+        "on-primary-container": "#c9a96e",
+        "on-primary-fixed": "#1a1508",
+        "on-primary-fixed-variant": "#2a2010",
+
+        // ─── Secondary (Neutral Gray) ────────────────────────────────────
+        secondary: "#888888",
+        "secondary-container": "#2a2a2a",
+        "secondary-fixed": "#cccccc",
+        "secondary-fixed-dim": "#999999",
+        "on-secondary": "#0a0a0a",
+        "on-secondary-container": "#aaaaaa",
+        "on-secondary-fixed": "#1a1a1a",
+        "on-secondary-fixed-variant": "#333333",
+
+        // ─── Tertiary (Warm Copper) ──────────────────────────────────────
+        tertiary: "#b87333",
+        "tertiary-container": "#2a1a0a",
+        "tertiary-fixed": "#d4a574",
+        "tertiary-fixed-dim": "#a66528",
         "on-tertiary": "#ffffff",
-        "on-primary-fixed": "#00174b",
-        "surface-variant": "#e1e2ed",
-        primary: "#2563eb",
-        "primary-container": "#dbeafe",
-        "on-tertiary-fixed": "#360f00",
-        "on-tertiary-fixed-variant": "#7d2d00",
-        error: "#ba1a1a",
-        "on-surface-variant": "#434655",
-        "on-primary-container": "#1e40af",
-        success: "#16a34a",
-        "success-container": "#dcfce7",
-        "on-success-container": "#166534",
-        warning: "#d97706",
-        "warning-container": "#fef3c7",
-        "on-warning-container": "#92400e",
+        "on-tertiary-container": "#d4a574",
+        "on-tertiary-fixed": "#2a1a0a",
+        "on-tertiary-fixed-variant": "#3a2510",
+
+        // ─── Outline ────────────────────────────────────────────────────
+        outline: "#3a3a3a",
+        "outline-variant": "#252525",
+
+        // ─── Inverse ────────────────────────────────────────────────────
+        "inverse-surface": "#e8e6e3",
+        "inverse-on-surface": "#0a0a0a",
+        "inverse-primary": "#8a6d35",
+
+        // ─── Error ──────────────────────────────────────────────────────
+        error: "#ff4444",
+        "error-container": "#2a0a0a",
+        "on-error": "#ffffff",
+        "on-error-container": "#ff6666",
+
+        // ─── Success ────────────────────────────────────────────────────
+        success: "#4ade80",
+        "success-container": "#0a2a14",
+        "on-success-container": "#6bee9a",
+
+        // ─── Warning ────────────────────────────────────────────────────
+        warning: "#f59e0b",
+        "warning-container": "#2a1a05",
+        "on-warning-container": "#fbbf24",
       },
+
       borderRadius: {
         DEFAULT: "0.25rem",
         sm: "0.25rem",
         md: "0.5rem",
         lg: "0.75rem",
         xl: "1rem",
+        "2xl": "1.5rem",
         full: "9999px",
       },
+
       spacing: {
         xs: "4px",
         sm: "8px",
@@ -83,25 +104,93 @@ export default {
         "3xl": "64px",
         gutter: "24px",
         margin: "32px",
+        section: "120px",
+        cinematic: "200px",
       },
+
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["'DM Serif Display'", "Georgia", "serif"],
       },
+
       fontSize: {
-        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        // ─── Cinematic Display ──────────────────────────────────────────
+        "display-hero": ["8rem", { lineHeight: "0.9", letterSpacing: "-0.04em", fontWeight: "700" }],
+        "display-hero-mobile": ["3.5rem", { lineHeight: "0.92", letterSpacing: "-0.03em", fontWeight: "700" }],
+        "display-xl": ["6rem", { lineHeight: "0.92", letterSpacing: "-0.03em", fontWeight: "700" }],
+        "display-lg": ["4rem", { lineHeight: "1.0", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "display-sm": ["2.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" }],
+
+        // ─── Headlines ─────────────────────────────────────────────────
         "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
         "headline-lg-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
         "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "headline-sm": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
         "title-lg": ["18px", { lineHeight: "28px", fontWeight: "600" }],
+        "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+
+        // ─── Body ───────────────────────────────────────────────────────
         "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
         "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+
+        // ─── Labels & Micro ─────────────────────────────────────────────
+        "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
         "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "500" }],
-        "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }],
+        "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+        micro: ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "600" }],
       },
+
       boxShadow: {
-        card: "0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)",
-        "card-hover": "0 4px 12px 0 rgba(0,0,0,0.10), 0 2px 4px -1px rgba(0,0,0,0.08)",
-        modal: "0 20px 60px -12px rgba(15,23,42,0.35)",
+        card: "0 1px 3px 0 rgba(0,0,0,0.4), 0 1px 2px -1px rgba(0,0,0,0.3)",
+        "card-hover": "0 4px 20px 0 rgba(0,0,0,0.5), 0 0 0 1px rgba(201,169,110,0.1)",
+        modal: "0 25px 80px -12px rgba(0,0,0,0.8)",
+        glow: "0 0 40px rgba(201,169,110,0.15)",
+        "glow-sm": "0 0 20px rgba(201,169,110,0.1)",
+      },
+
+      animation: {
+        grain: "grain 8s steps(10) infinite",
+        "marquee-left": "marquee-left 30s linear infinite",
+        "marquee-right": "marquee-right 30s linear infinite",
+        "reveal-up": "reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "fade-in": "fade-in 0.6s ease forwards",
+        "pulse-slow": "pulse 3s ease-in-out infinite",
+      },
+
+      keyframes: {
+        grain: {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "10%": { transform: "translate(-5%, -10%)" },
+          "20%": { transform: "translate(-15%, 5%)" },
+          "30%": { transform: "translate(7%, -25%)" },
+          "40%": { transform: "translate(-5%, 25%)" },
+          "50%": { transform: "translate(-15%, 10%)" },
+          "60%": { transform: "translate(15%, 0%)" },
+          "70%": { transform: "translate(0%, 15%)" },
+          "80%": { transform: "translate(3%, 35%)" },
+          "90%": { transform: "translate(-10%, 10%)" },
+        },
+        "marquee-left": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-right": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        "reveal-up": {
+          "0%": { transform: "translateY(120%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+      },
+
+      transitionTimingFunction: {
+        "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
+        cinematic: "cubic-bezier(0.77, 0, 0.175, 1)",
       },
     },
   },

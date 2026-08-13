@@ -1,311 +1,326 @@
+import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
-import { fadeInUp, staggerContainer, staggerItem } from "../lib/motion";
+import { PageLoader } from "../components/cinematic/PageLoader";
+import { CustomCursor } from "../components/cinematic/CustomCursor";
+import { Marquee } from "../components/cinematic/Marquee";
+import { SplitText } from "../components/cinematic/SplitText";
+import { MagneticButton } from "../components/cinematic/MagneticButton";
+
+const SERVICES = [
+  { num: "01", title: "FLEET INTELLIGENCE", desc: "Real-time valuation, market forecasting, and dynamic pricing models across your entire inventory." },
+  { num: "02", title: "VALUATION ENGINE", desc: "AI-powered depreciation modeling and competitive market analysis for precision pricing." },
+  { num: "03", title: "PIPELINE CONTROL", desc: "End-to-end acquisition and sales pipeline management with drag-and-drop workflow." },
+  { num: "04", title: "FINANCING DESK", desc: "Automated loan calculations, instant PDF generation, and integrated approval routing." },
+  { num: "05", title: "ANALYTICS & REPORTING", desc: "Deep operational insights with customizable dashboards and export capabilities." },
+  { num: "06", title: "INVENTORY OPERATIONS", desc: "Full CRUD lifecycle management with role-based access and audit trails." },
+];
 
 export function LandingPage() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredService, setHoveredService] = useState<number | null>(null);
   const prefersReduced = useReducedMotion();
 
-  return (
-    <div className="min-h-screen bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
-      {/* Top Header App Bar */}
-      <header className="fixed top-0 z-50 w-full border-b border-outline-variant/30 bg-surface/70 backdrop-blur-xl transition-all duration-250">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-md md:h-20 md:px-xl">
-          <Link to="/" className="flex items-center gap-sm transition-opacity hover:opacity-90">
-            <span
-              className="material-symbols-outlined text-[28px] font-bold text-primary"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              speed
-            </span>
-            <span className="text-title-lg font-bold tracking-tight text-primary md:text-headline-sm">
-              DriveFlow
-            </span>
-          </Link>
+  const handleLoaderComplete = useCallback(() => setIsLoaded(true), []);
 
-          <div className="flex items-center gap-sm">
+  if (!isLoaded) {
+    return <PageLoader onComplete={handleLoaderComplete} />;
+  }
+
+  return (
+    <div className="min-h-screen bg-background text-on-surface selection:bg-primary/20 selection:text-on-surface">
+      <CustomCursor />
+
+      {/* ─── FIXED NAVIGATION ─────────────────────────────────────────────── */}
+      <nav className="fixed top-0 z-50 w-full">
+        <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-12">
+          <Link to="/" className="font-display text-xl tracking-tight text-on-surface transition-opacity hover:opacity-70">
+            DRIVEFLOW
+          </Link>
+          <div className="flex items-center gap-8">
             <Link
               to="/login"
-              className="rounded-lg px-md py-sm text-label-md font-semibold text-on-surface hover:bg-surface-container-high transition-colors"
+              className="hidden text-[11px] font-semibold uppercase tracking-[0.15em] text-on-surface-variant transition-colors hover:text-on-surface md:block"
             >
               Sign In
             </Link>
-            <Link
-              to="/register"
-              className="flex items-center gap-xs rounded-lg bg-primary px-lg py-sm text-label-md font-semibold text-on-primary shadow-sm hover:bg-primary-fixed-variant transition-colors"
-            >
-              Get Started
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="pb-2xl pt-24 md:pt-32">
-        {/* Hero Section */}
-        <section className="mx-auto grid min-h-[640px] max-w-7xl grid-cols-1 items-center gap-xl px-md lg:grid-cols-2 md:px-xl">
-          <motion.div
-            className="z-10 flex flex-col gap-lg"
-            variants={!prefersReduced ? staggerContainer : undefined}
-            initial={!prefersReduced ? "hidden" : undefined}
-            animate={!prefersReduced ? "visible" : undefined}
-          >
-            <motion.div
-              variants={!prefersReduced ? staggerItem : undefined}
-              className="inline-flex w-fit items-center gap-xs rounded-full border border-outline-variant bg-surface-container-high px-sm py-xs"
-            >
-              <span className="material-symbols-outlined text-[14px] text-primary">verified</span>
-              <span className="text-label-sm text-on-surface-variant font-medium">
-                Enterprise Grade Fleet Management v2.0
-              </span>
-            </motion.div>
-
-            <motion.h1
-              variants={!prefersReduced ? staggerItem : undefined}
-              className="max-w-[620px] text-headline-lg-mobile font-bold leading-tight text-on-background md:text-display-lg"
-            >
-              Manage, Value & Forecast Enterprise Fleet Inventory in Real Time.
-            </motion.h1>
-
-            <motion.p
-              variants={!prefersReduced ? staggerItem : undefined}
-              className="max-w-[520px] text-body-lg text-on-surface-variant"
-            >
-              Comprehensive dealership monitoring for inventory, logistics, financing, and AI forecasting.
-              Built for scale, engineered for precision.
-            </motion.p>
-
-            <motion.div
-              variants={!prefersReduced ? staggerItem : undefined}
-              className="flex flex-col gap-md pt-sm sm:flex-row"
-            >
-              <Link
-                to="/login"
-                className="flex items-center justify-center gap-xs rounded-lg bg-primary px-xl py-md text-label-md font-semibold text-on-primary shadow-md hover:bg-primary-fixed-variant transition-all hover:-translate-y-0.5"
-              >
-                Explore Live Fleet
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </Link>
+            <MagneticButton>
               <Link
                 to="/register"
-                className="flex items-center justify-center gap-xs rounded-lg border border-outline-variant bg-surface-container-lowest px-xl py-md text-label-md font-semibold text-on-surface hover:bg-surface-container-low transition-all"
+                className="flex items-center gap-2 border border-outline px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-on-surface transition-all hover:border-primary hover:text-primary"
               >
-                <span className="material-symbols-outlined text-[18px]">person_add</span>
-                Create Free Account
+                Enter Platform
+                <span className="text-primary">→</span>
               </Link>
-            </motion.div>
+            </MagneticButton>
+          </div>
+        </div>
+      </nav>
 
-            <motion.div
-              variants={!prefersReduced ? staggerItem : undefined}
-              className="mt-md flex flex-wrap items-center gap-lg border-t border-outline-variant/50 pt-md"
+      {/* ─── HERO SECTION (100vh) ─────────────────────────────────────────── */}
+      <section className="relative flex h-screen flex-col justify-between overflow-hidden px-6 pt-20 md:px-12">
+        {/* Top metadata row */}
+        <motion.div
+          className="mx-auto flex w-full max-w-[1400px] items-start justify-between pt-8"
+          initial={!prefersReduced ? { opacity: 0 } : undefined}
+          animate={!prefersReduced ? { opacity: 1 } : undefined}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        >
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-on-surface-variant">
+            Automotive Intelligence Platform
+          </span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-on-surface-variant">
+            © 2026
+          </span>
+        </motion.div>
+
+        {/* Hero headline — asymmetric, massive */}
+        <div className="mx-auto w-full max-w-[1400px] flex-1 flex items-center">
+          <div className="w-full">
+            <SplitText
+              className="font-display text-display-hero-mobile md:text-display-hero leading-none tracking-tight text-on-surface"
+              delay={0.3}
+              stagger={0.1}
             >
-              <div className="flex items-center gap-xs text-on-surface-variant">
-                <span className="material-symbols-outlined text-[16px] text-primary">shield</span>
-                <span className="text-label-sm font-medium">Enterprise Ready</span>
-              </div>
-              <div className="flex items-center gap-xs text-on-surface-variant">
-                <span className="material-symbols-outlined text-[16px] text-primary">assignment_turned_in</span>
-                <span className="text-label-sm font-medium">ISO Compliant</span>
-              </div>
-              <div className="flex items-center gap-xs text-on-surface-variant">
-                <span className="material-symbols-outlined text-[16px] text-primary">memory</span>
-                <span className="text-label-sm font-medium">AI Powered</span>
-              </div>
-              <div className="flex items-center gap-xs text-on-surface-variant">
-                <span className="material-symbols-outlined text-[16px] text-primary">network_check</span>
-                <span className="text-label-sm font-medium">99.99% Uptime</span>
-              </div>
-            </motion.div>
-          </motion.div>
+              {`THE FUTURE\nOF AUTOMOTIVE\nINTELLIGENCE.`}
+            </SplitText>
 
-          {/* Hero Visuals Section */}
-          <motion.div
-            className="relative hidden h-[580px] w-full md:block"
-            variants={!prefersReduced ? fadeInUp : undefined}
-            initial={!prefersReduced ? "hidden" : undefined}
-            animate={!prefersReduced ? "visible" : undefined}
-          >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-surface-container-low to-primary/10 blur-3xl opacity-60" />
-
-            {/* Floating Glass Card 1: Tesla Model Y */}
-            <div className="absolute left-[8%] top-[8%] z-20 w-[280px] rounded-2xl border border-outline-variant bg-surface-container-lowest/80 p-md backdrop-blur-xl shadow-xl hover:-translate-y-1 transition-transform cursor-pointer">
-              <img
-                src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=600&q=80"
-                alt="Tesla Model Y"
-                className="h-[140px] w-full rounded-xl object-cover"
-              />
-              <div className="mt-sm flex justify-between items-start">
-                <div>
-                  <h3 className="text-headline-sm font-bold text-on-surface">Tesla Model Y</h3>
-                  <p className="flex items-center gap-0.5 text-body-md text-on-surface-variant">
-                    <span className="material-symbols-outlined text-[14px]">location_on</span> San Jose, CA
-                  </p>
-                </div>
-                <span className="rounded bg-emerald-500/10 px-sm py-0.5 text-label-sm font-semibold text-emerald-600 border border-emerald-500/20">
-                  In Stock
-                </span>
-              </div>
-              <p className="mt-xs text-headline-sm font-bold text-primary">$54,990</p>
-            </div>
-
-            {/* Floating Glass Card 2: BMW X5 */}
-            <div className="absolute right-[5%] top-[38%] z-30 w-[260px] rounded-2xl border border-outline bg-surface-container-lowest/90 p-md backdrop-blur-xl shadow-2xl hover:-translate-y-1 transition-transform cursor-pointer">
-              <img
-                src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80"
-                alt="BMW X5"
-                className="h-[120px] w-full rounded-xl object-cover"
-              />
-              <div className="mt-sm flex justify-between items-start">
-                <div>
-                  <h3 className="text-title-md font-bold text-on-surface">BMW X5</h3>
-                  <p className="flex items-center gap-0.5 text-label-sm text-on-surface-variant">
-                    <span className="material-symbols-outlined text-[12px]">location_on</span> Austin, TX
-                  </p>
-                </div>
-                <span className="rounded bg-amber-500/10 px-sm py-0.5 text-label-sm font-semibold text-amber-600 border border-amber-500/20">
-                  Reserved
-                </span>
-              </div>
-              <p className="mt-xs text-title-md font-bold text-on-surface">$65,200</p>
-            </div>
-
-            {/* Floating Glass Card 3: Ford F-150 */}
-            <div className="absolute bottom-[8%] left-[22%] z-10 w-[290px] rounded-2xl border border-outline-variant bg-surface-container-lowest/80 p-md backdrop-blur-xl shadow-lg hover:-translate-y-1 transition-transform cursor-pointer">
-              <img
-                src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80"
-                alt="Ford F-150"
-                className="h-[130px] w-full rounded-xl object-cover"
-              />
-              <div className="mt-sm flex justify-between items-start">
-                <div>
-                  <h3 className="text-headline-sm font-bold text-on-surface">Ford F-150</h3>
-                  <p className="flex items-center gap-0.5 text-body-md text-on-surface-variant">
-                    <span className="material-symbols-outlined text-[14px]">location_on</span> Denver, CO
-                  </p>
-                </div>
-                <span className="rounded bg-emerald-500/10 px-sm py-0.5 text-label-sm font-semibold text-emerald-600 border border-emerald-500/20">
-                  In Stock
-                </span>
-              </div>
-              <p className="mt-xs text-headline-sm font-bold text-primary">$48,500</p>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* KPI Metrics Section */}
-        <section className="mx-auto max-w-7xl px-md py-xl md:px-xl">
-          <div className="grid grid-cols-2 gap-md md:grid-cols-4">
-            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm hover:border-outline transition-all">
-              <p className="text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">
-                Total Fleet Value
-              </p>
-              <p className="mt-xs text-display-sm font-bold tracking-tight text-on-surface">$1.2B+</p>
-            </div>
-            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm hover:border-outline transition-all">
-              <p className="text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">
-                Vehicles Managed
-              </p>
-              <p className="mt-xs text-display-sm font-bold tracking-tight text-on-surface">450k+</p>
-            </div>
-            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm hover:border-outline transition-all">
-              <p className="text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">
-                Monthly Transactions
-              </p>
-              <p className="mt-xs text-display-sm font-bold tracking-tight text-on-surface">12k+</p>
-            </div>
-            <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-lg shadow-sm hover:border-outline transition-all">
-              <p className="text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">
-                Ops Efficiency
-              </p>
-              <p className="mt-xs text-display-sm font-bold tracking-tight text-primary">98.4%</p>
-            </div>
+            <motion.p
+              className="mt-8 max-w-[480px] text-body-lg leading-relaxed text-on-surface-variant"
+              initial={!prefersReduced ? { opacity: 0, y: 20 } : undefined}
+              animate={!prefersReduced ? { opacity: 1, y: 0 } : undefined}
+              transition={{ delay: 0.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Enterprise fleet management built for precision. Real-time inventory,
+              AI valuation, and operational analytics — unified in one platform.
+            </motion.p>
           </div>
-        </section>
+        </div>
 
-        {/* Bento Grid Features */}
-        <section className="mx-auto max-w-7xl px-md py-xl md:px-xl">
-          <div className="mb-xl text-center">
-            <h2 className="text-headline-md font-bold text-on-surface md:text-display-sm">
-              Comprehensive Fleet Intelligence
+        {/* Bottom metadata row */}
+        <motion.div
+          className="mx-auto flex w-full max-w-[1400px] items-end justify-between pb-8"
+          initial={!prefersReduced ? { opacity: 0 } : undefined}
+          animate={!prefersReduced ? { opacity: 1 } : undefined}
+          transition={{ delay: 1.2, duration: 0.6 }}
+        >
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-on-surface-variant">
+            <motion.span
+              animate={!prefersReduced ? { y: [0, 4, 0] } : undefined}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            >
+              ↓
+            </motion.span>
+            Scroll to explore
+          </div>
+          <span className="hidden text-[10px] font-semibold uppercase tracking-[0.3em] text-primary md:block">
+            Available for Enterprise
+          </span>
+        </motion.div>
+
+        {/* Subtle background gradient */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute right-0 top-1/4 h-[600px] w-[600px] rounded-full bg-primary/[0.03] blur-[120px]" />
+          <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-primary/[0.02] blur-[100px]" />
+        </div>
+      </section>
+
+      {/* ─── STATEMENT SECTION ────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[1400px] px-6 py-section md:px-12">
+        <div className="divider-gold mb-section" />
+        <motion.h2
+          className="font-display text-display-lg md:text-display-xl leading-none tracking-tight text-on-surface"
+          initial={!prefersReduced ? { opacity: 0, y: 60 } : undefined}
+          whileInView={!prefersReduced ? { opacity: 1, y: 0 } : undefined}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          WE DON'T MANAGE
+          <br />
+          <span className="text-on-surface-variant">INVENTORY.</span>
+          <br />
+          WE COMMAND IT.
+        </motion.h2>
+      </section>
+
+      {/* ─── MARQUEE ──────────────────────────────────────────────────────── */}
+      <div className="py-12 space-y-4 overflow-hidden">
+        <Marquee speed={25} direction="left" variant="massive">
+          INVENTORY — ANALYTICS — FLEET — PRECISION — AUTOMOTIVE — INTELLIGENCE
+        </Marquee>
+        <Marquee speed={40} direction="right" variant="thin">
+          VALUATION — PIPELINE — FINANCING — REPORTING — OPERATIONS — FORECASTING
+        </Marquee>
+      </div>
+
+      {/* ─── SERVICES SECTION ─────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[1400px] px-6 py-section md:px-12">
+        <div className="mb-16 flex items-end justify-between">
+          <div>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-on-surface-variant">
+              What We Offer
+            </span>
+            <h2 className="mt-4 font-display text-display-sm md:text-display-lg tracking-tight text-on-surface">
+              CAPABILITIES
             </h2>
-            <p className="mt-xs text-body-lg text-on-surface-variant max-w-[600px] mx-auto">
-              Consolidate your operations into a single, high-performance platform engineered for automotive enterprise scale.
-            </p>
           </div>
+          <span className="hidden text-[10px] font-semibold uppercase tracking-[0.3em] text-on-surface-variant md:block">
+            06 Services
+          </span>
+        </div>
 
-          <div className="grid grid-cols-1 gap-lg md:grid-cols-3">
-            {/* Feature 1 */}
-            <div className="relative overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest p-xl shadow-sm md:col-span-2">
-              <span className="material-symbols-outlined text-[36px] text-primary mb-md block">
-                insights
-              </span>
-              <h3 className="text-headline-sm font-bold text-on-surface mb-xs">
-                Real-Time Fleet Intelligence
-              </h3>
-              <p className="text-body-md text-on-surface-variant mb-md max-w-[440px]">
-                Instantly aggregate valuation, market forecasting, and dynamic pricing models across your entire national inventory footprint.
-              </p>
-              <ul className="space-y-xs text-label-md font-medium text-on-surface">
-                <li className="flex items-center gap-xs">
-                  <span className="material-symbols-outlined text-[18px] text-primary">check_circle</span> Live Market Valuation
-                </li>
-                <li className="flex items-center gap-xs">
-                  <span className="material-symbols-outlined text-[18px] text-primary">check_circle</span> AI Depreciation Forecasting
-                </li>
-              </ul>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="flex flex-col justify-between rounded-2xl border border-outline-variant bg-surface-container-lowest p-xl shadow-sm">
-              <div>
-                <span className="material-symbols-outlined text-[36px] text-primary mb-md block">
-                  request_quote
+        <div className="border-t border-outline-variant">
+          {SERVICES.map((svc, i) => (
+            <motion.div
+              key={svc.num}
+              className="group flex cursor-pointer items-center justify-between border-b border-outline-variant py-8 transition-colors hover:border-primary/30 md:py-10"
+              onMouseEnter={() => setHoveredService(i)}
+              onMouseLeave={() => setHoveredService(null)}
+              initial={!prefersReduced ? { opacity: 0, y: 30 } : undefined}
+              whileInView={!prefersReduced ? { opacity: 1, y: 0 } : undefined}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="flex items-center gap-6 md:gap-12">
+                <span className="text-[11px] font-semibold tracking-[0.15em] text-on-surface-variant transition-colors group-hover:text-primary">
+                  {svc.num}
                 </span>
-                <h3 className="text-headline-sm font-bold text-on-surface mb-xs">
-                  Loan & Lease Auto Desk
-                </h3>
-                <p className="text-body-md text-on-surface-variant">
-                  Streamline finance desk operations with automated calculations, instant PDF generation, and integrated approval routing.
-                </p>
+                <div>
+                  <h3
+                    className={`text-xl font-semibold tracking-tight transition-all duration-500 md:text-3xl ${
+                      hoveredService === i ? "text-on-surface translate-x-2" : "text-on-surface/70"
+                    }`}
+                  >
+                    {svc.title}
+                  </h3>
+                  <motion.p
+                    className="mt-2 max-w-md text-body-md text-on-surface-variant"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={hoveredService === i ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {svc.desc}
+                  </motion.p>
+                </div>
               </div>
-              <Link to="/login" className="mt-lg flex items-center gap-xs font-semibold text-primary hover:underline">
-                Learn More <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-              </Link>
-            </div>
-          </div>
-        </section>
 
-        {/* Call to Action */}
-        <section className="mx-auto max-w-4xl px-md py-2xl text-center md:px-xl">
-          <h2 className="text-headline-md font-bold text-on-background md:text-display-sm">
-            Ready to modernize your dealership operations?
+              <motion.span
+                className="text-primary opacity-0 transition-opacity group-hover:opacity-100"
+                animate={hoveredService === i ? { x: 0 } : { x: -10 }}
+              >
+                →
+              </motion.span>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── STATS SECTION ────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[1400px] px-6 py-section md:px-12">
+        <div className="divider-gold mb-20" />
+        <div className="grid grid-cols-2 gap-12 md:grid-cols-4 md:gap-8">
+          {[
+            { value: "450K+", label: "VEHICLES MANAGED" },
+            { value: "$1.2B+", label: "TOTAL FLEET VALUE" },
+            { value: "98.4%", label: "OPERATIONAL UPTIME" },
+            { value: "12K+", label: "MONTHLY TRANSACTIONS" },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              className="text-center md:text-left"
+              initial={!prefersReduced ? { opacity: 0, y: 40 } : undefined}
+              whileInView={!prefersReduced ? { opacity: 1, y: 0 } : undefined}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <p className="font-display text-display-sm md:text-display-lg tracking-tight text-primary">
+                {stat.value}
+              </p>
+              <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── BRAND STATEMENT ──────────────────────────────────────────────── */}
+      <section className="flex min-h-[60vh] items-center justify-center px-6 py-section">
+        <motion.h2
+          className="text-center font-display text-display-lg md:text-display-hero tracking-tight text-on-surface/[0.08] leading-none"
+          initial={!prefersReduced ? { opacity: 0, scale: 0.95 } : undefined}
+          whileInView={!prefersReduced ? { opacity: 1, scale: 1 } : undefined}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          PRECISION
+          <br />
+          DRIVES
+          <br />
+          EVERYTHING.
+        </motion.h2>
+      </section>
+
+      {/* ─── CTA SECTION ──────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[1400px] px-6 py-section md:px-12">
+        <div className="divider-gold mb-20" />
+        <motion.div
+          className="flex flex-col items-start gap-12"
+          initial={!prefersReduced ? { opacity: 0, y: 40 } : undefined}
+          whileInView={!prefersReduced ? { opacity: 1, y: 0 } : undefined}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h2 className="font-display text-display-sm md:text-display-xl tracking-tight text-on-surface leading-none">
+            LET'S TRANSFORM
+            <br />
+            <span className="text-primary">YOUR FLEET.</span>
           </h2>
-          <p className="mt-xs text-body-lg text-on-surface-variant max-w-[600px] mx-auto">
-            Join the leading automotive groups scaling their logistics and sales with DriveFlow's enterprise infrastructure.
-          </p>
-          <div className="mt-lg flex justify-center gap-md">
+
+          <MagneticButton strength={0.2}>
             <Link
               to="/register"
-              className="flex items-center gap-xs rounded-lg bg-primary px-2xl py-md text-label-md font-semibold text-on-primary shadow-lg hover:bg-primary-fixed-variant transition-all hover:-translate-y-0.5"
+              className="group flex items-center gap-4 border border-primary bg-transparent px-8 py-4 text-[13px] font-semibold uppercase tracking-[0.15em] text-primary transition-all hover:bg-primary hover:text-on-primary"
             >
-              Request Enterprise Demo
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              Enter Platform
+              <motion.span
+                className="inline-block transition-transform group-hover:translate-x-1"
+              >
+                →
+              </motion.span>
             </Link>
-          </div>
-        </section>
-      </main>
+          </MagneticButton>
 
-      {/* Footer */}
-      <footer className="border-t border-outline-variant/50 bg-surface-container-low py-xl">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-md px-md md:flex-row md:px-xl">
-          <div className="text-title-lg font-bold text-on-surface">DriveFlow</div>
-          <p className="text-body-md text-on-surface-variant">
-            &copy; {new Date().getFullYear()} Global Motors DriveFlow. All rights reserved.
-          </p>
-          <div className="flex gap-md text-label-md font-medium text-on-surface-variant">
-            <Link to="/login" className="hover:text-primary transition-colors">Sign In</Link>
-            <Link to="/register" className="hover:text-primary transition-colors">Register</Link>
+          <div className="mt-8 flex flex-wrap gap-12 text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
+            <span>hello@driveflow.io</span>
+            <span>San Jose, CA</span>
+            <a href="#" className="transition-colors hover:text-primary">LinkedIn</a>
+            <a href="#" className="transition-colors hover:text-primary">GitHub</a>
           </div>
+        </motion.div>
+      </section>
+
+      {/* ─── FOOTER ───────────────────────────────────────────────────────── */}
+      <footer className="border-t border-outline-variant">
+        <div className="mx-auto flex max-w-[1400px] flex-col gap-8 px-6 py-12 md:flex-row md:items-center md:justify-between md:px-12">
+          <span className="font-display text-lg tracking-tight text-on-surface">DRIVEFLOW</span>
+
+          <div className="flex flex-wrap gap-8 text-[10px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
+            <Link to="/login" className="transition-colors hover:text-on-surface">Dashboard</Link>
+            <Link to="/login" className="transition-colors hover:text-on-surface">Inventory</Link>
+            <Link to="/login" className="transition-colors hover:text-on-surface">Analytics</Link>
+            <Link to="/register" className="transition-colors hover:text-on-surface">Register</Link>
+          </div>
+
+          <p className="text-[10px] tracking-[0.15em] text-on-surface-variant/50">
+            © {new Date().getFullYear()} DriveFlow. All rights reserved.
+          </p>
+        </div>
+
+        <div className="border-t border-outline-variant/50 py-4 text-center">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary/40">
+            Available for Enterprise — 2026
+          </span>
         </div>
       </footer>
     </div>

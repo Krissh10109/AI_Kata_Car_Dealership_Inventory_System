@@ -1,3 +1,6 @@
+/* ─── Google Fonts: Inter (body) + DM Serif Display (headlines) ──────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,8 +12,20 @@
     height: 100%;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-on-surface font-sans antialiased;
+    cursor: none; /* Hide default cursor on desktop */
+  }
+
+  /* Restore default cursor on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    body {
+      cursor: auto;
+    }
   }
 
   * {
@@ -18,11 +33,33 @@
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-surface;
+    @apply outline-none ring-1 ring-primary/50 ring-offset-1 ring-offset-background;
+  }
+
+  /* Custom scrollbar for the cinematic dark theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a3a;
+  }
+
+  /* Selection color */
+  ::selection {
+    background: rgba(201, 169, 110, 0.3);
+    color: #e8e6e3;
   }
 }
 
 @layer components {
+  /* ─── Material Symbols (preserved for icon support) ────────────────────── */
   .material-symbols-outlined {
     font-family: "Material Symbols Outlined";
     font-weight: normal;
@@ -37,9 +74,75 @@
     direction: ltr;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* ─── Film Grain Overlay ───────────────────────────────────────────────── */
+  .grain-overlay::after {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+    animation: grain 8s steps(10) infinite;
+  }
+
+  /* ─── Editorial Typography Utilities ───────────────────────────────────── */
+  .text-editorial {
+    @apply font-display tracking-tight;
+  }
+
+  .text-micro {
+    @apply text-micro uppercase tracking-widest font-semibold text-on-surface-variant;
+  }
+
+  /* ─── Cinematic Line Divider ───────────────────────────────────────────── */
+  .divider-gold {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent;
+  }
+
+  /* ─── Custom Cursor Dot ────────────────────────────────────────────────── */
+  .cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: #c9a96e;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.3s ease;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+  }
+
+  .cursor-dot.expanded {
+    width: 60px;
+    height: 60px;
+    background: rgba(201, 169, 110, 0.15);
+    border: 1px solid rgba(201, 169, 110, 0.4);
+  }
+
+  /* ─── Clip-path reveal utility ─────────────────────────────────────────── */
+  .clip-reveal {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .clip-reveal.revealed {
+    clip-path: inset(0 0 0% 0);
+  }
 }
 
-/* Premium skeleton shimmer */
+/* ─── Premium skeleton shimmer (dark variant) ────────────────────────────── */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -53,16 +156,16 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 20%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.08) 80%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 80%,
     transparent 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s ease-in-out infinite;
 }
 
-/* Reduced motion support */
+/* ─── Reduced motion support ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -71,5 +174,9 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .grain-overlay::after {
+    display: none;
   }
 }

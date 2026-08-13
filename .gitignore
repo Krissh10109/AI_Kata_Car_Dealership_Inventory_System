@@ -9,3 +9,7 @@ backend/.env.test
 backend/.tmp/
 .DS_Store
 *.tsbuildinfo
+
+.vercel
+.env*.local
+backend/prisma/dev.db

@@ -1,7 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useAuth } from "../hooks/useAuth";
-import { staggerContainer, staggerItem, backdropVariants } from "../lib/motion";
 
 const NAV_ITEMS = [
   { to: "/dashboard", label: "Dashboard", icon: "dashboard" },
@@ -27,111 +26,92 @@ export function Sidebar({ onAddVehicle, isOpen, onCloseMobile }: SidebarProps) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden"
             onClick={onCloseMobile}
             aria-hidden="true"
-            variants={!prefersReduced ? backdropVariants : undefined}
-            initial={!prefersReduced ? "hidden" : undefined}
-            animate={!prefersReduced ? "visible" : undefined}
-            exit={!prefersReduced ? "exit" : undefined}
+            initial={!prefersReduced ? { opacity: 0 } : undefined}
+            animate={!prefersReduced ? { opacity: 1 } : undefined}
+            exit={!prefersReduced ? { opacity: 0 } : undefined}
           />
         )}
       </AnimatePresence>
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[280px] flex-col border-r border-outline-variant bg-surface-container-lowest p-md transition-transform duration-200 md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[240px] flex-col border-r border-outline-variant bg-[#0d0d0d] transition-transform duration-200 md:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-center px-xs py-md border-b border-outline-variant/50 pb-md mb-xs overflow-hidden">
-          <img src="/Logo_GM.png" alt="Global Motors Logo" className="h-32 w-auto max-w-[260px] object-contain scale-[1.75] transform transition-transform" />
+        {/* Logo */}
+        <div className="flex items-center px-6 py-8 border-b border-outline-variant/50">
+          <span className="font-display text-lg tracking-tight text-on-surface">DRIVEFLOW</span>
         </div>
 
-        <motion.nav
-          className="mt-lg flex flex-1 flex-col gap-xs overflow-y-auto"
-          variants={!prefersReduced ? staggerContainer : undefined}
-          initial={!prefersReduced ? "hidden" : undefined}
-          animate={!prefersReduced ? "visible" : undefined}
-        >
+        {/* Navigation */}
+        <nav className="mt-6 flex flex-1 flex-col gap-1 px-3 overflow-y-auto">
           {NAV_ITEMS.map((item) => {
             const isActive = location.pathname === item.to;
             return (
-              <motion.div
+              <NavLink
                 key={item.to}
-                variants={!prefersReduced ? staggerItem : undefined}
-                className="relative"
+                to={item.to}
+                onClick={onCloseMobile}
+                className={`group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
+                  isActive
+                    ? "text-primary bg-primary/[0.06]"
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
+                }`}
               >
-                {/* Animated active indicator — Linear-style smooth transition */}
+                {/* Active indicator — thin gold left border */}
                 {isActive && (
                   <motion.div
                     layoutId={!prefersReduced ? "sidebar-active" : undefined}
-                    className="absolute inset-0 rounded-xl bg-primary shadow-md shadow-primary/20"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[2px] bg-primary rounded-full"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
-                <NavLink
-                  to={item.to}
-                  onClick={onCloseMobile}
-                  className={`group relative z-10 flex items-center gap-md rounded-xl px-md py-md text-label-lg transition-colors duration-200 ${
-                    isActive
-                      ? "text-on-primary font-bold"
-                      : "text-slate-700 dark:text-slate-200 font-semibold hover:bg-surface-container-high hover:text-primary hover:shadow-sm"
-                  }`}
-                >
-                  <motion.span
-                    className="material-symbols-outlined text-[22px]"
-                    whileHover={!prefersReduced && !isActive ? { x: 3 } : undefined}
-                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    {item.icon}
-                  </motion.span>
-                  <span className="transition-all duration-200">{item.label}</span>
-                </NavLink>
-              </motion.div>
+                <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'wght' 300" }}>
+                  {item.icon}
+                </span>
+                <span>{item.label}</span>
+              </NavLink>
             );
           })}
-        </motion.nav>
+        </nav>
 
-        <div className="mt-md flex flex-col gap-sm">
+        {/* Bottom actions */}
+        <div className="mt-auto flex flex-col gap-1 px-3 pb-4">
           {onAddVehicle && (
             <motion.button
               type="button"
               onClick={onAddVehicle}
-              className="flex w-full items-center justify-center gap-sm rounded-lg bg-primary px-lg py-md text-label-md font-semibold text-on-primary transition-all hover:opacity-90"
+              className="flex w-full items-center justify-center gap-2 border border-primary px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary transition-all hover:bg-primary hover:text-on-primary"
               whileTap={!prefersReduced ? { scale: 0.97 } : undefined}
-              whileHover={!prefersReduced ? { y: -1 } : undefined}
             >
-              <motion.span
-                className="material-symbols-outlined"
-                whileHover={!prefersReduced ? { rotate: 90 } : undefined}
-                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              >
-                add
-              </motion.span>
+              <span className="material-symbols-outlined text-[16px]">add</span>
               Add Vehicle
             </motion.button>
           )}
 
-          <div className="mt-sm flex flex-col gap-xs border-t border-outline-variant pt-sm">
+          <div className="mt-2 flex flex-col gap-0.5 border-t border-outline-variant/50 pt-3">
             <NavLink
               to="/support"
               onClick={onCloseMobile}
               className={({ isActive }) =>
-                `flex items-center gap-md rounded-xl px-md py-md text-label-lg transition-all duration-200 ${
+                `flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
                   isActive
-                    ? "bg-primary text-on-primary font-bold shadow-md shadow-primary/20"
-                    : "text-slate-700 dark:text-slate-200 font-semibold hover:bg-surface-container-high hover:text-primary"
+                    ? "text-primary bg-primary/[0.06]"
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
                 }`
               }
             >
-              <span className="material-symbols-outlined text-[22px]">support_agent</span>
+              <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'wght' 300" }}>support_agent</span>
               Support
             </NavLink>
             <button
               type="button"
               onClick={logout}
-              className="flex items-center gap-md rounded-xl px-md py-md text-left text-label-lg font-semibold text-error transition-all hover:bg-error-container/40"
+              className="flex items-center gap-3 rounded-md px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.12em] text-on-surface-variant transition-all hover:text-error hover:bg-error/5"
             >
-              <span className="material-symbols-outlined text-[22px]">logout</span>
+              <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'wght' 300" }}>logout</span>
               Sign Out
             </button>
           </div>
